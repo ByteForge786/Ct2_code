@@ -3,7 +3,7 @@ import transformers
 from huggingface_hub import snapshot_download
 model_id = "SagarKrishna/Llama-3-8B-Text2SQL_Instruct-ct2-int8_float16"
 model_path = snapshot_download(model_id)
-model = ctranslate2.Generator(model_id)
+model = ctranslate2.Generator(model_path)
 tokenizer = transformers.AutoTokenizer.from_pretrained(model_id)
 
 messages = [
