@@ -120,7 +120,7 @@ CREATE TABLE exception_data(
 
 --Using valid SQLite,answer the following questions for the tables provided above.
 
---show rule ids with open exception state?(generate only 1 sql query)
+--show rule ids with open exception state?(generate only 1 sql query and dont assume any other condition in where clause)
 
 answer:"""
 messages = [
