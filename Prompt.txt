@@ -1,0 +1,33 @@
+Given a natural language query about a database, convert it into a SQL statement. Follow these steps:
+
+1. Identify the key elements:
+   - Determine the main action (SELECT, INSERT, UPDATE, DELETE)
+   - Identify the tables involved
+   - List the columns or data points mentioned
+   - Note any conditions or filters
+
+2. Structure the basic query:
+   - Start with the main action (e.g., SELECT)
+   - List the relevant columns
+   - Specify the table(s) using FROM
+
+3. Add conditions and filters:
+   - Use WHERE clauses for any specified conditions
+   - Include any necessary JOINs if multiple tables are involved
+
+4. Consider additional elements:
+   - Add GROUP BY if aggregation is required
+   - Include ORDER BY for sorting results
+   - Use LIMIT if a specific number of results is requested
+
+5. Review and refine:
+   - Ensure the SQL syntax is correct
+   - Check that all parts of the original query are addressed
+
+6. Output the final SQL query
+
+Now, please convert the following natural language query into SQL:
+
+[Insert natural language query here]
+
+Show your work by explaining each step of your thought process.
