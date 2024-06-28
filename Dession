@@ -1,0 +1,43 @@
+import streamlit as st
+
+# Initialize session state variables
+if 'generated_query' not in st.session_state:
+    st.session_state.generated_query = ""
+if 'query_generated' not in st.session_state:
+    st.session_state.query_generated = False
+
+def generate_sql_query(schema, question):
+    # Your existing logic to generate SQL query
+    # This is a placeholder - replace with your actual function
+    return f"SELECT * FROM table WHERE condition; -- Based on: {question}"
+
+def main():
+    st.title("SQL Query Generator and Executor")
+
+    # Text area for schema input
+    schema_input = st.text_area("Enter your table schema:", height=200)
+
+    # Text input for question
+    question_input = st.text_input("Enter your question:")
+
+    # Button to generate SQL query
+    if st.button("Generate SQL Query"):
+        if schema_input and question_input:
+            with st.spinner("Generating SQL query..."):
+                st.session_state.generated_query = generate_sql_query(schema_input, question_input)
+            st.session_state.query_generated = True
+        else:
+            st.warning("Please enter both the schema and the question.")
+
+    # Display generated query if available
+    if st.session_state.query_generated:
+        st.subheader("Generated SQL Query:")
+        st.code(st.session_state.generated_query, language="sql")
+
+    # Button to run query on Snowflake
+    if st.button("Run on Snowflake", disabled=not st.session_state.query_generated):
+        # Placeholder for Snowflake execution
+        st.success(f"Query executed on Snowflake: {st.session_state.generated_query}")
+
+if __name__ == "__main__":
+    main()
