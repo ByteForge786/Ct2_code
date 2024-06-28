@@ -1,8 +1,10 @@
- import streamlit as st
+import streamlit as st
 
 # Initialize session state variables
 if 'generated_query' not in st.session_state:
     st.session_state.generated_query = ""
+if 'modified_query' not in st.session_state:
+    st.session_state.modified_query = ""
 if 'query_generated' not in st.session_state:
     st.session_state.query_generated = False
 
@@ -10,6 +12,12 @@ def generate_sql_query(schema, question):
     # Your existing logic to generate SQL query
     # This is a placeholder - replace with your actual function
     return f"SELECT * FROM table WHERE condition; -- Based on: {question}"
+
+def modify_query(query):
+    # Your logic to modify the query
+    # This is a placeholder - replace with your actual modification logic
+    modified = query.replace("condition", "new_condition")
+    return modified
 
 def run_on_snowflake(query):
     # Your logic to run the query on Snowflake
@@ -29,16 +37,21 @@ def main():
             with st.spinner("Generating SQL query..."):
                 st.session_state.generated_query = generate_sql_query(schema_input, question_input)
             st.session_state.query_generated = True
+            # Modify the query once after generation
+            st.session_state.modified_query = modify_query(st.session_state.generated_query)
         else:
             st.warning("Please enter both the schema and the question.")
 
     if st.session_state.query_generated:
         st.subheader("Generated SQL Query:")
         st.code(st.session_state.generated_query, language="sql")
+        
+        st.subheader("Modified SQL Query:")
+        st.code(st.session_state.modified_query, language="sql")
 
         if st.button("Run on Snowflake"):
             with st.spinner("Executing query on Snowflake..."):
-                result = run_on_snowflake(st.session_state.generated_query)
+                result = run_on_snowflake(st.session_state.modified_query)
             st.success("Query executed successfully!")
             st.subheader("Snowflake Execution Result:")
             st.write(result)
