@@ -5,25 +5,26 @@ if 'generated_query' not in st.session_state:
     st.session_state.generated_query = ""
 if 'query_generated' not in st.session_state:
     st.session_state.query_generated = False
-if 'run_snowflake' not in st.session_state:
-    st.session_state.run_snowflake = False
 
 def generate_sql_query(schema, question):
     # Your existing logic to generate SQL query
     # This is a placeholder - replace with your actual function
     return f"SELECT * FROM table WHERE condition; -- Based on: {question}"
 
+def run_on_snowflake(query):
+    # Your logic to run the query on Snowflake
+    # This is a placeholder - replace with your actual function
+    return f"Snowflake execution result for query: {query}"
+
 def main():
     st.title("SQL Query Generator and Executor")
 
-    # Text area for schema input
-    schema_input = st.text_area("Enter your table schema:", height=200)
+    with st.form("query_generator"):
+        schema_input = st.text_area("Enter your table schema:", height=200)
+        question_input = st.text_input("Enter your question:")
+        generate_button = st.form_submit_button("Generate SQL Query")
 
-    # Text input for question
-    question_input = st.text_input("Enter your question:")
-
-    # Button to generate SQL query
-    if st.button("Generate SQL Query"):
+    if generate_button:
         if schema_input and question_input:
             with st.spinner("Generating SQL query..."):
                 st.session_state.generated_query = generate_sql_query(schema_input, question_input)
@@ -31,21 +32,16 @@ def main():
         else:
             st.warning("Please enter both the schema and the question.")
 
-    # Display generated query if available
     if st.session_state.query_generated:
         st.subheader("Generated SQL Query:")
         st.code(st.session_state.generated_query, language="sql")
 
-    # Button to run query on Snowflake
-    if st.button("Run on Snowflake", disabled=not st.session_state.query_generated):
-        st.session_state.run_snowflake = True
-
-    # Execute Snowflake query if button was pressed
-    if st.session_state.run_snowflake:
-        # Placeholder for Snowflake execution
-        st.success(f"Query executed on Snowflake: {st.session_state.generated_query}")
-        # Reset the run_snowflake flag
-        st.session_state.run_snowflake = False
+        if st.button("Run on Snowflake"):
+            with st.spinner("Executing query on Snowflake..."):
+                result = run_on_snowflake(st.session_state.generated_query)
+            st.success("Query executed successfully!")
+            st.subheader("Snowflake Execution Result:")
+            st.write(result)
 
 if __name__ == "__main__":
     main()
