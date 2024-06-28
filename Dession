@@ -1,10 +1,12 @@
-import streamlit as st
+ import streamlit as st
 
 # Initialize session state variables
 if 'generated_query' not in st.session_state:
     st.session_state.generated_query = ""
 if 'query_generated' not in st.session_state:
     st.session_state.query_generated = False
+if 'run_snowflake' not in st.session_state:
+    st.session_state.run_snowflake = False
 
 def generate_sql_query(schema, question):
     # Your existing logic to generate SQL query
@@ -36,8 +38,14 @@ def main():
 
     # Button to run query on Snowflake
     if st.button("Run on Snowflake", disabled=not st.session_state.query_generated):
+        st.session_state.run_snowflake = True
+
+    # Execute Snowflake query if button was pressed
+    if st.session_state.run_snowflake:
         # Placeholder for Snowflake execution
         st.success(f"Query executed on Snowflake: {st.session_state.generated_query}")
+        # Reset the run_snowflake flag
+        st.session_state.run_snowflake = False
 
 if __name__ == "__main__":
     main()
